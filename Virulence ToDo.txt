@@ -1,0 +1,82 @@
+Implementations for MVP:
+	General:
+		ADD TO VERSION CONTROL !!!!!! -- DONE
+		Add save system (PostgreSQL)
+		Add load system
+		Lose the game condition (Yes, idle game with a "losing" condition, starting the game from the beginning)
+		When you lose / "prestige" (need different name) gain a currency based on how much shit you got to increase future speed.
+		Multi lose pity currency.
+	UI:
+		Add Paged Display for gamelog -- DONE
+		Add Display for currencies
+		Add Paged Display for scavengers -- IN PROGRESS
+		Add Paged Display for rescuers
+	Story:
+		Add gamelog for story -- DONE
+		Add story entries for the base game mechanics -- IN PROGRESS
+	World:
+		Add worldgen
+		Add random locations with items
+		Add dangers to locations (like infected areas, rogue people, occasional rabid infected)
+	Humans:
+		Add possibility of adding humans to player with random names and semi-random stats -- IN PROGRESS
+		Scavengers:
+			Add Scavengers -- DONE
+			Generate funds -- DONE
+			Traverse world locations manually
+				Find items
+				Locate dangers
+		Rescuers:
+			Add Rescuers
+			Get first rescuer from event
+			Rescuers find humans in world locations
+Implementations for after MVP:
+	General:
+		Multiple saves
+		Keep track of time spent away since last save
+		Convert time spent away into a currency to speed up parts of the game / buy special things or things that have been lost
+	Story:
+		Add events for getting more story entries -- ONGOING
+	Headquarters:
+		Add infection events
+		Add quarantine zone
+	Dark Zone:
+		Heavy infection (equipment needed to reduce chance of infection and death)
+		Valuable items
+		Larger amount of rabid infected
+		Special infected
+		Actual zombie-like infected
+		Send Rescuers with Soldiers to bring back VIPs
+	Humans:
+		Add equipment
+		Scavengers:
+			Automatically traverse world based on VIPs
+		Soldiers:
+			Add Soldiers
+			Soldiers can be sent to explore the Dark Zone
+		VIPs:
+			Add VIPs
+			VIPs give special bonusses to other parts of the game
+	
+
+Implementations for fun:
+	General:
+		A way to make multiple saves useful / new experiences instead of always going about the same way
+	UI:
+		Visually traversable world map based on world data
+	Animals:
+		Can spread infection
+		Show fewer symptoms / harder to notice
+		Can produce items if caught
+
+
+
+
+
+
+
+
+
+
+
+
