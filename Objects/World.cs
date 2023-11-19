@@ -7,5 +7,7 @@ using System.Threading.Tasks;
 namespace Virulence.Objects;
 public class World
 {
-    public List<Building> buildings = new();
+    public int id { get; set; }
+    public Point Origin { get; } = new Point(0, 0);
+    public Dictionary<Point,Tile> tiles = new();
 }

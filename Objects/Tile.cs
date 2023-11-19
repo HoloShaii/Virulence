@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Virulence.Objects;
-public class Building
+public class Tile
 {
+    public int id;
+    public Point location;
 }
