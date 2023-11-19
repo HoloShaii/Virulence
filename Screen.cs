@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 #endif
 
 namespace Virulence;
-public partial class Form1 : Form
+public partial class Screen : Form
 {
 #if DEBUG
     [DllImport("kernel32.dll", SetLastError = true)]
@@ -14,7 +14,7 @@ public partial class Form1 : Form
 #endif
 
     public Game Game { get; set; }
-    public Form1()
+    public Screen()
     {
         InitializeComponent();
 #if DEBUG
@@ -37,7 +37,7 @@ public partial class Form1 : Form
             Console.WriteLine(ex);
         }
 #else
-        Game.KickStart();
+        Game.PreGame();
 #endif
         //Thread t = new Thread(Game.KickStart);
         //t.Start();
@@ -73,7 +73,7 @@ public partial class Form1 : Form
 
 public static class ControlExtensions
 {
-    public static T GetLastControlInChain<T>(this Form1 form, string chain) where T : Control
+    public static T GetLastControlInChain<T>(this Screen form, string chain) where T : Control
     {
         var names = chain.Split('>');
         if (names.Length == 0)
@@ -102,7 +102,7 @@ public static class ControlExtensions
         return (T)currentControl;
     }
 
-    public static T GetControl<T>(this Form1 form, string name) where T : Control
+    public static T GetControl<T>(this Screen form, string name) where T : Control
     {
         return (T)form.Controls[name];
     }

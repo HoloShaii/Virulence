@@ -10,7 +10,7 @@ using Virulence.Objects;
 namespace Virulence;
 public class Game
 {
-    private Form1 gameForm;
+    private Screen gameForm;
     private int gameTickInterval = 50;
     public bool ShuttingDown;
     public GameLog Log;
@@ -18,7 +18,7 @@ public class Game
     public Player Player;
     public World World;
 
-    public Game(Form1 gameForm)
+    public Game(Screen gameForm)
     {
         this.gameForm = gameForm;
         this.Log = new GameLog();
@@ -30,11 +30,6 @@ public class Game
     public void PreGame()
     {
         Player.AddScavenger();
-
-
-
-
-
 
 
 

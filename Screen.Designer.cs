@@ -2,7 +2,7 @@
 
 namespace Virulence;
 
-partial class Form1
+partial class Screen
 {
     /// <summary>
     ///  Required designer variable.
