@@ -7,7 +7,7 @@ public class Player
     public string saveName;
     public int worldId;
     public BigDouble funds = new(0);
-    public BigDouble Humans = new(1);
+    public BigDouble Humans = new(2);
     public List<Scavenger> Scavengers = new();
     public List<Rescuer> rescuers = new();
     public List<Soldier> infantry = new();
@@ -22,8 +22,9 @@ public class Player
             {
                 Name = string.IsNullOrWhiteSpace(name) ? GetRandomName() : name,
                 Age = 0,
-                LifeSpan = rnd.Next(4500, 8900)
-                
+                LifeSpan = rnd.Next(45000, 89000),
+                EfficiencyMulti = 1,
+                FundsPerGameTick = rnd.Next(4, 9)
             };
 
             Scavengers.Add(scavenger);
@@ -32,7 +33,7 @@ public class Player
 
 
 
-
+    
 
 
 

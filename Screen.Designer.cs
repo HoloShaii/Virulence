@@ -40,12 +40,25 @@ partial class Screen
             this.button2 = new System.Windows.Forms.Button();
             this.grpScavengers = new System.Windows.Forms.GroupBox();
             this.grpScavenger6 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge6 = new System.Windows.Forms.Label();
             this.grpScavenger5 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge5 = new System.Windows.Forms.Label();
             this.grpScavenger4 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge4 = new System.Windows.Forms.Label();
             this.grpScavenger3 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge3 = new System.Windows.Forms.Label();
             this.grpScavenger2 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge2 = new System.Windows.Forms.Label();
             this.grpScavenger1 = new System.Windows.Forms.GroupBox();
+            this.lblScavengerAge1 = new System.Windows.Forms.Label();
+            this.lblFunds = new System.Windows.Forms.Label();
             this.grpScavengers.SuspendLayout();
+            this.grpScavenger6.SuspendLayout();
+            this.grpScavenger5.SuspendLayout();
+            this.grpScavenger4.SuspendLayout();
+            this.grpScavenger3.SuspendLayout();
+            this.grpScavenger2.SuspendLayout();
+            this.grpScavenger1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtGameLog
@@ -162,6 +175,7 @@ partial class Screen
             // 
             // grpScavenger6
             // 
+            this.grpScavenger6.Controls.Add(this.lblScavengerAge6);
             this.grpScavenger6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger6.ForeColor = System.Drawing.Color.White;
             this.grpScavenger6.Location = new System.Drawing.Point(214, 115);
@@ -171,8 +185,18 @@ partial class Screen
             this.grpScavenger6.TabStop = false;
             this.grpScavenger6.Text = "name1";
             // 
+            // lblScavengerAge6
+            // 
+            this.lblScavengerAge6.AutoSize = true;
+            this.lblScavengerAge6.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge6.Name = "lblScavengerAge6";
+            this.lblScavengerAge6.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge6.TabIndex = 5;
+            this.lblScavengerAge6.Text = "label7";
+            // 
             // grpScavenger5
             // 
+            this.grpScavenger5.Controls.Add(this.lblScavengerAge5);
             this.grpScavenger5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger5.ForeColor = System.Drawing.Color.White;
             this.grpScavenger5.Location = new System.Drawing.Point(115, 115);
@@ -182,8 +206,18 @@ partial class Screen
             this.grpScavenger5.TabStop = false;
             this.grpScavenger5.Text = "name1";
             // 
+            // lblScavengerAge5
+            // 
+            this.lblScavengerAge5.AutoSize = true;
+            this.lblScavengerAge5.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge5.Name = "lblScavengerAge5";
+            this.lblScavengerAge5.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge5.TabIndex = 4;
+            this.lblScavengerAge5.Text = "label6";
+            // 
             // grpScavenger4
             // 
+            this.grpScavenger4.Controls.Add(this.lblScavengerAge4);
             this.grpScavenger4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger4.ForeColor = System.Drawing.Color.White;
             this.grpScavenger4.Location = new System.Drawing.Point(16, 115);
@@ -193,8 +227,18 @@ partial class Screen
             this.grpScavenger4.TabStop = false;
             this.grpScavenger4.Text = "name1";
             // 
+            // lblScavengerAge4
+            // 
+            this.lblScavengerAge4.AutoSize = true;
+            this.lblScavengerAge4.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge4.Name = "lblScavengerAge4";
+            this.lblScavengerAge4.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge4.TabIndex = 3;
+            this.lblScavengerAge4.Text = "label5";
+            // 
             // grpScavenger3
             // 
+            this.grpScavenger3.Controls.Add(this.lblScavengerAge3);
             this.grpScavenger3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger3.ForeColor = System.Drawing.Color.White;
             this.grpScavenger3.Location = new System.Drawing.Point(213, 22);
@@ -204,8 +248,18 @@ partial class Screen
             this.grpScavenger3.TabStop = false;
             this.grpScavenger3.Text = "name1";
             // 
+            // lblScavengerAge3
+            // 
+            this.lblScavengerAge3.AutoSize = true;
+            this.lblScavengerAge3.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge3.Name = "lblScavengerAge3";
+            this.lblScavengerAge3.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge3.TabIndex = 2;
+            this.lblScavengerAge3.Text = "label4";
+            // 
             // grpScavenger2
             // 
+            this.grpScavenger2.Controls.Add(this.lblScavengerAge2);
             this.grpScavenger2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger2.ForeColor = System.Drawing.Color.White;
             this.grpScavenger2.Location = new System.Drawing.Point(114, 22);
@@ -215,8 +269,18 @@ partial class Screen
             this.grpScavenger2.TabStop = false;
             this.grpScavenger2.Text = "name1";
             // 
+            // lblScavengerAge2
+            // 
+            this.lblScavengerAge2.AutoSize = true;
+            this.lblScavengerAge2.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge2.Name = "lblScavengerAge2";
+            this.lblScavengerAge2.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge2.TabIndex = 1;
+            this.lblScavengerAge2.Text = "label3";
+            // 
             // grpScavenger1
             // 
+            this.grpScavenger1.Controls.Add(this.lblScavengerAge1);
             this.grpScavenger1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.grpScavenger1.ForeColor = System.Drawing.Color.White;
             this.grpScavenger1.Location = new System.Drawing.Point(15, 22);
@@ -226,13 +290,34 @@ partial class Screen
             this.grpScavenger1.TabStop = false;
             this.grpScavenger1.Text = "name1";
             // 
-            // Form1
+            // lblScavengerAge1
+            // 
+            this.lblScavengerAge1.AutoSize = true;
+            this.lblScavengerAge1.Location = new System.Drawing.Point(6, 19);
+            this.lblScavengerAge1.Name = "lblScavengerAge1";
+            this.lblScavengerAge1.Size = new System.Drawing.Size(38, 15);
+            this.lblScavengerAge1.TabIndex = 0;
+            this.lblScavengerAge1.Text = "label2";
+            // 
+            // lblFunds
+            // 
+            this.lblFunds.AutoSize = true;
+            this.lblFunds.Font = new System.Drawing.Font("Unispace", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblFunds.ForeColor = System.Drawing.Color.White;
+            this.lblFunds.Location = new System.Drawing.Point(12, 9);
+            this.lblFunds.Name = "lblFunds";
+            this.lblFunds.Size = new System.Drawing.Size(141, 35);
+            this.lblFunds.TabIndex = 10;
+            this.lblFunds.Text = "Funds: ";
+            // 
+            // Screen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1350, 729);
             this.ControlBox = false;
+            this.Controls.Add(this.lblFunds);
             this.Controls.Add(this.grpScavengers);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -244,10 +329,22 @@ partial class Screen
             this.Controls.Add(this.txtGameLog);
             this.MaximumSize = new System.Drawing.Size(1366, 768);
             this.MinimumSize = new System.Drawing.Size(1366, 768);
-            this.Name = "Form1";
+            this.Name = "Screen";
             this.Text = "Virulence";
             this.Shown += new System.EventHandler(this.Form1_Show);
             this.grpScavengers.ResumeLayout(false);
+            this.grpScavenger6.ResumeLayout(false);
+            this.grpScavenger6.PerformLayout();
+            this.grpScavenger5.ResumeLayout(false);
+            this.grpScavenger5.PerformLayout();
+            this.grpScavenger4.ResumeLayout(false);
+            this.grpScavenger4.PerformLayout();
+            this.grpScavenger3.ResumeLayout(false);
+            this.grpScavenger3.PerformLayout();
+            this.grpScavenger2.ResumeLayout(false);
+            this.grpScavenger2.PerformLayout();
+            this.grpScavenger1.ResumeLayout(false);
+            this.grpScavenger1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -270,4 +367,11 @@ partial class Screen
     private GroupBox grpScavenger5;
     private GroupBox grpScavenger4;
     private GroupBox grpScavenger3;
+    private Label lblScavengerAge6;
+    private Label lblScavengerAge5;
+    private Label lblScavengerAge4;
+    private Label lblScavengerAge3;
+    private Label lblScavengerAge2;
+    private Label lblScavengerAge1;
+    private Label lblFunds;
 }

@@ -44,11 +44,11 @@ public class ScavengerDisplay
         Changed = true;
     }
 
-    public string[] GetScavengerNames()
-    {
-        Changed = false;
-        return ScavengerDisplayList[_pageNumber - 1].Select(x => x.Name).ToArray();
-    }
+    public string[] GetScavengerNames() => ScavengerDisplayList[_pageNumber - 1].Select(x => x.Name).ToArray();
+
+    public string[] GetScavengerAges() => ScavengerDisplayList[_pageNumber - 1].Select(x => x.Age.ToString()).ToArray();
+
+    public string[] GetScavengerLifespans() => ScavengerDisplayList[_pageNumber - 1].Select(x => x.LifeSpan.ToString()).ToArray();
 
     public void NextPage()
     {

@@ -39,8 +39,6 @@ public partial class Screen : Form
 #else
         Game.PreGame();
 #endif
-        //Thread t = new Thread(Game.KickStart);
-        //t.Start();
     }
 
     private void btnExit_Click(Object sender, EventArgs e)
@@ -91,11 +89,11 @@ public static class ControlExtensions
         {
             if (currentControl == null)
             {
-                currentControl = form.GetControl<T>(names[i]);
+                currentControl = form.GetControl<Control>(names[i]);
             }
             else
             {
-                currentControl = currentControl.GetControl<T>(names[i]);
+                currentControl = currentControl.GetControl<Control>(names[i]);
             }
         }
 

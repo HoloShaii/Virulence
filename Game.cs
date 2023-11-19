@@ -31,8 +31,7 @@ public class Game
     {
         Player.AddScavenger();
 
-
-
+        StartGame();
     }
 
     public void StartGame()
@@ -66,7 +65,11 @@ public class Game
         scavengersToRemove.Clear();
 
         Player.Scavengers.ForEach(x => x.Age = x.Age.plus(1));
-        Player.Scavengers.RemoveAll(x => x.Age > x.LifeSpan);
+        if (Player.Scavengers.Any(x => x.Age > x.LifeSpan))
+        {
+            Player.Scavengers.RemoveAll(x => x.Age > x.LifeSpan);
+            ScavengerDisplay.NeedsUpdate = true;
+        }
 
         scavengerFundsList.AddRange(Player.Scavengers.Select(x => x.ReturnCalculatedFundsPerTick()));
         BigDouble scavengerFunds = new(0);
@@ -76,9 +79,15 @@ public class Game
 
     public void VisualLoop()
     {
+        FundsDisplayLoop();
         GameLogLoop();
         CurrenciesDisplayLoop();
         ScavengerDisplayLoop();
+    }
+
+    public void FundsDisplayLoop()
+    {
+        gameForm.SetControlText(gameForm.GetControl<Label>("lblFunds"), String.Format("{0}: {1}", "Funds", Player.funds.ToString()));
     }
 
     public void GameLogLoop()
@@ -92,7 +101,7 @@ public class Game
 
     public void CurrenciesDisplayLoop()
     {
-        
+
     }
 
     public void ScavengerDisplayLoop()
@@ -106,16 +115,35 @@ public class Game
             var names = ScavengerDisplay.GetScavengerNames();
             for (int i = 1; i <= 6; i++)
             {
-                var controlNameChain = "grpScavengers>grpScavenger" + i.ToString();
+                var controlNameChainNames = "grpScavengers>grpScavenger" + i.ToString();
+
                 if (i <= names.Length)
                 {
-                    gameForm.SetControlText(gameForm.GetLastControlInChain<GroupBox>(controlNameChain), names[i - 1]);
-                    gameForm.GetLastControlInChain<GroupBox>(controlNameChain).ShowHideControl(true);
+                    gameForm.SetControlText(gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames), names[i - 1]);
+                    gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).ShowHideControl(true);
                 }
                 else
                 {
-                    gameForm.GetLastControlInChain<GroupBox>(controlNameChain).ShowHideControl(false);
+                    gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).ShowHideControl(false);
                 }
+
+            }
+            ScavengerDisplay.Changed = false;
+        }
+
+        var ages = ScavengerDisplay.GetScavengerAges();
+        var lifespans = ScavengerDisplay.GetScavengerLifespans();
+        for (int i = 1; i <= 6; i++)
+        {
+            var controlNameChainAges = "grpScavengers>grpScavenger" + i.ToString() + ">lblScavengerAge" + i.ToString();
+            if (i <= ages.Length)
+            {
+                gameForm.SetControlText(gameForm.GetLastControlInChain<Label>(controlNameChainAges), ages[i - 1] + " / " + lifespans[i - 1]);
+                gameForm.GetLastControlInChain<Label>(controlNameChainAges).ShowHideControl(true);
+            }
+            else
+            {
+                gameForm.GetLastControlInChain<Label>(controlNameChainAges).ShowHideControl(false);
             }
         }
     }
