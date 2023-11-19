@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Virulence.Objects;
 public class Scavenger
 {
+    public int id { get; set; }
     public string Name { get; set; }
     public BigDouble Age { get; set; }
     public BigDouble LifeSpan { get; set; }

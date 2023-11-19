@@ -1,13 +1,10 @@
 ﻿using BreakEternity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Virulence.Objects;
 public class Player
 {
+    public int id { get; set; }
+    public string saveName { get; set; }
     public BigDouble funds = new(0);
     public BigDouble Humans = new(1);
     public List<Scavenger> Scavengers = new();
