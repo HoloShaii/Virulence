@@ -12,7 +12,7 @@ Implementations for MVP:
 		Multi lose pity currency.
 	UI:
 		Add Paged Display for gamelog -- DONE
-		Add Display for currencies
+		Add Display for currencies -- IN PROGRESS
 		Add Paged Display for scavengers -- IN PROGRESS
 		Add Paged Display for rescuers
 	Story:

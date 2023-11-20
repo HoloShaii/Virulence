@@ -27,13 +27,65 @@ public class DatabaseHandler : IDisposable
     }
 
     private const string _connectionString = "Server=localhost;Port=5432;User Id=postgres;Password=3bubDr@K4W6*pvQQDCYj@@kQ;Database=Virulence;";
-    private NpgsqlConnection _db;
-    public NpgsqlConnection DB { get => _db; }
+    private readonly NpgsqlConnection _db;
+    public NpgsqlConnection DB => _db;
 
     public DatabaseHandler()
     {
         _db = new NpgsqlConnection(_connectionString);
         _db.Open();
+    }
+
+    public List<object[]> ExecuteQuery(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query)) return null;
+
+        NpgsqlCommand command = new()
+        {
+            Connection = _db,
+            CommandText = query
+        };
+
+        try
+        {
+            NpgsqlDataReader dataReader = command.ExecuteReader();
+            List<object[]> rows = new();
+            while (dataReader.Read())
+            {
+                object[] row = new object[dataReader.FieldCount];
+                dataReader.GetValues(row);
+                rows.Add(row);
+            }
+            dataReader.Close();
+
+            return rows;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return null;
+        }
+    }
+
+    public bool ExecuteVoidQuery(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query)) return false;
+
+        NpgsqlCommand command = new()
+        {
+            Connection = _db,
+            CommandText = query
+        };
+        try 
+        { 
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
+        }
     }
 
     public List<object[]> Get(string tablename, List<string> columns = null, List<(string column, string value, WhereClauseComparison compare, WhereClauseCombiner combine)> where = null, string customWhere = "")
@@ -109,18 +161,25 @@ public class DatabaseHandler : IDisposable
             Connection = _db,
             CommandText = commandText.ToString()
         };
-
-        NpgsqlDataReader dataReader = command.ExecuteReader();
-        List<object[]> rows = new();
-        while (dataReader.Read())
+        try
         {
-            object[] row = new object[dataReader.FieldCount];
-            dataReader.GetValues(row);
-            rows.Add(row);
-        }
-        dataReader.Close();
+            NpgsqlDataReader dataReader = command.ExecuteReader();
+            List<object[]> rows = new();
+            while (dataReader.Read())
+            {
+                object[] row = new object[dataReader.FieldCount];
+                dataReader.GetValues(row);
+                rows.Add(row);
+            }
+            dataReader.Close();
 
-        return rows;
+            return rows;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return null;
+        }
     }
 
     protected virtual void Dispose(Boolean disposing)
