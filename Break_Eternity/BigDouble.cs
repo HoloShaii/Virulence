@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
 using System.Text;
 using Random = System.Random;
-
+#pragma warning disable CS0162
+#pragma warning disable CS0472
+#pragma warning disable CS8632
 namespace BreakEternity;
 
 // I'm not sure if there's a "Yes, this is Unity" define symbol

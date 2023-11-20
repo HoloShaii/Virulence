@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Virulence.Extensions;
 using Virulence.Objects;
 
 namespace Virulence;
@@ -87,15 +88,15 @@ public class Game
 
     public void FundsDisplayLoop()
     {
-        gameForm.SetControlText(gameForm.GetControl<Label>("lblFunds"), String.Format("{0}: {1}", "Funds", Player.funds.ToString()));
+        gameForm.GetControl<Label>("lblFunds").SetControlText(String.Format("{0}: {1}", "Funds", Player.funds.ToString()));
     }
 
     public void GameLogLoop()
     {
         if (Log.Changed)
         {
-            gameForm.SetControlText(gameForm.GetControl<Label>("lblLogPageNumber"), String.Format("{0}/{1}", Log.PageNumber, Log.MaxPageNumber));
-            gameForm.SetControlText(gameForm.GetControl<TextBox>("txtGameLog"), Log.GetLogText());
+            gameForm.GetControl<Label>("lblLogPageNumber").SetControlText(String.Format("{0}/{1}", Log.PageNumber, Log.MaxPageNumber));
+            gameForm.GetControl<TextBox>("txtGameLog").SetControlText(Log.GetLogText());
         }
     }
 
@@ -119,7 +120,7 @@ public class Game
 
                 if (i <= names.Length)
                 {
-                    gameForm.SetControlText(gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames), names[i - 1]);
+                    gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).SetControlText(names[i - 1]);
                     gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).ShowHideControl(true);
                 }
                 else
@@ -138,7 +139,7 @@ public class Game
             var controlNameChainAges = "grpScavengers>grpScavenger" + i.ToString() + ">lblScavengerAge" + i.ToString();
             if (i <= ages.Length)
             {
-                gameForm.SetControlText(gameForm.GetLastControlInChain<Label>(controlNameChainAges), ages[i - 1] + " / " + lifespans[i - 1]);
+                gameForm.GetLastControlInChain<Label>(controlNameChainAges).SetControlText(ages[i - 1] + " / " + lifespans[i - 1]);
                 gameForm.GetLastControlInChain<Label>(controlNameChainAges).ShowHideControl(true);
             }
             else
