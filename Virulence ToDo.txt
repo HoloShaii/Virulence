@@ -3,10 +3,10 @@ Implementations for MVP:
 		ADD TO VERSION CONTROL !!!!!! -- DONE
 		Add database handler (PostgreSQL) -- DONE
 			Implement SELECT -- DONE
-			Implement INSERT -- IN PROGRESS
-			Implement UPDATE
-			Implement DELETE
-		Add save/load system
+			Implement INSERT -- DONE
+			Implement UPDATE -- DONE
+			Implement DELETE -- DONE
+		Add save/load system -- IN PROGRESS
 		Lose the game condition (Yes, idle game with a "losing" condition, starting the game from the beginning)
 		When you lose / "prestige" (need different name) gain a currency based on how much shit you got to increase future speed.
 		Multi lose pity currency.
