@@ -7,12 +7,11 @@ DROP TABLE IF EXISTS "worldtiles" CASCADE;
 DROP TABLE IF EXISTS "tile" CASCADE;
 
 CREATE TABLE player (
-	id					SERIAL,
-	saveName			varchar(255),
+	id					SERIAL PRIMARY KEY,
 	worldId				int,
+	saveName			varchar(255),
 	funds				text,
-	humans				text,
-	PRIMARY KEY(id, saveName)
+	humans				text
 );
 
 CREATE TABLE playerScavengers (
