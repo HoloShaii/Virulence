@@ -13,6 +13,7 @@ public class DatabaseHandler : IDisposable
         Less,
         GreaterOrEqual,
         LessOrEqual,
+        In
     }
     public enum WhereClauseCombiner
     {
@@ -149,9 +150,9 @@ public class DatabaseHandler : IDisposable
         commandText.Append(' ')
                    .Append("VALUES")
                    .Append(' ')
-                   .Append('(')
-                   .Append(string.Join(", ", values))
-                   .Append(')')
+                   .Append("('")
+                   .Append(string.Join("', '", values))
+                   .Append("')")
                    .Append(';');
 
         return ExecuteVoidQuery(commandText.ToString());
@@ -243,12 +244,17 @@ public class DatabaseHandler : IDisposable
                 WhereClauseComparison.Less => '<',
                 WhereClauseComparison.GreaterOrEqual => "<=",
                 WhereClauseComparison.LessOrEqual => ">=",
+                WhereClauseComparison.In => "IN",
                 _ => throw new NotImplementedException("How even??"),
             });
 
-            whereBuilder.Append(' ')
+            if (compare == WhereClauseComparison.In) whereBuilder.Append('(');
+
+            whereBuilder.Append(" '")
                        .Append(value)
-                       .Append(' ');
+                       .Append("' ");
+
+            if (compare == WhereClauseComparison.In) whereBuilder.Append(')');
 
             if (i < where.Count - 1 && combine == WhereClauseCombiner.None) combine = WhereClauseCombiner.And;
 
