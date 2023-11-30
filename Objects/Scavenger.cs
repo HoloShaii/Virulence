@@ -10,15 +10,18 @@ public class Scavenger
 {
     public int id { get; set; }
     public string Name { get; set; }
-    public BigDouble Age { get; set; }
-    public BigDouble LifeSpan { get; set; }
+    public int Age { get; set; }
+    public int LifeSpan { get; set; }
     public BigDouble EfficiencyMulti { get; set; } = 1;
-    public BigDouble FundsPerGameTick { get; set; }
+    public BigDouble CreditsPerGameTick { get; set; }
+    public Point Location { get; set; } = World.Origin;
+    public bool Manual { get; set; } = false;
 
-    public BigDouble ReturnCalculatedFundsPerTick() 
+    public BigDouble ReturnCalculatedCreditsPerTick(BigDouble tileScavengingEfficiency) 
     {
-        BigDouble funds = FundsPerGameTick;
-        funds = funds.multiply(EfficiencyMulti);
-        return funds;
+        BigDouble credits = CreditsPerGameTick;
+        credits = credits.multiply(EfficiencyMulti);
+        credits = credits.multiply(tileScavengingEfficiency);
+        return credits;
     }
 }

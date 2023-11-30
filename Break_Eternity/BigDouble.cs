@@ -50,12 +50,12 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         // Faster AND simpler
         List<double> powersOf10 = new();
 
-        for (var i = DOUBLE_EXP_MIN + 1; i <= DOUBLE_EXP_MAX; i++)
+        for (Int64 i = DOUBLE_EXP_MIN + 1; i <= DOUBLE_EXP_MAX; i++)
         {
             powersOf10.Add(double.Parse("1e" + i));
         }
 
-        var indexOf0InPowersOf10 = 323;
+        Int32 indexOf0InPowersOf10 = 323;
         return powersOf10[power + indexOf0InPowersOf10];
     }
 
@@ -191,9 +191,9 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
     public static double decPlaces(double value, double places)
     {
-        var len = places + 1;
-        var numDigits = Math.Ceiling(Math.Log10(Math.Abs(value)));
-        var rounded = Math.Round(value * Math.Pow(10, len - numDigits)) * Math.Pow(10, numDigits - len);
+        Double len = places + 1;
+        Double numDigits = Math.Ceiling(Math.Log10(Math.Abs(value)));
+        Double rounded = Math.Round(value * Math.Pow(10, len - numDigits)) * Math.Pow(10, numDigits - len);
         return double.Parse(rounded.ToString("N" + Math.Max(len - numDigits, 0)));
     }
 
@@ -225,11 +225,11 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         n -= 1;
-        var l = 0.9189385332046727; //0.5*Math.Log(2*Math.PI)
+        Double l = 0.9189385332046727; //0.5*Math.Log(2*Math.PI)
         l += (n + 0.5) * Math.Log(n);
         l -= n;
-        var n2 = n * n;
-        var np = n;
+        Double n2 = n * n;
+        Double np = n;
         l += 1 / (12 * np);
         np *= n2;
         l += 1 / (360 * np);
@@ -280,7 +280,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 break;
         }
 
-        for (var i = 0; i < 100; ++i)
+        for (Int32 i = 0; i < 100; ++i)
         {
             wn = (z * Math.Exp(-w) + w * w) / (w + 1);
             if (Math.Abs(wn - w) < tol * Math.Abs(wn))
@@ -327,7 +327,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
         //Halley's method; see 5.9 in [1]
 
-        for (var i = 0; i < 100; ++i)
+        for (Int32 i = 0; i < 100; ++i)
         {
             ew = w.neg().exp();
             wewz = w.sub(z.mul(ew));
@@ -462,7 +462,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             {
                 case 0:
                 {
-                    var exp = Math.Floor(Math.Log10(mag));
+                    Double exp = Math.Floor(Math.Log10(mag));
                     //handle special case 5e-324
                     double man;
                     if (mag == 5e-324)
@@ -478,7 +478,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 }
                 case 1:
                 {
-                    var residue = mag - Math.Floor(mag);
+                    Double residue = mag - Math.Floor(mag);
                     return sign * Math.Pow(10, residue);
                 }
                 default:
@@ -1123,7 +1123,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
     public static BigDouble randomBigDoubleForTesting(double maxLayers)
     {
-        var rand = new Random();
+        Random rand = new Random();
         // NOTE: This doesn't follow any kind of sane random distribution, so use this for testing purposes only.
         //5% of the time, return 0
         if (rand.NextDouble() * 20 < 1)
@@ -1131,7 +1131,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return FC_NN(0, 0, 0);
         }
 
-        var randomsign = new Random().NextDouble() > 0.5 ? 1 : -1;
+        Int32 randomsign = new Random().NextDouble() > 0.5 ? 1 : -1;
 
         //5% of the time, return 1 or -1
         if (rand.NextDouble() * 20 < 1)
@@ -1140,16 +1140,16 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         //pick a random layer
-        var layer = Math.Floor(rand.NextDouble() * (maxLayers + 1));
+        Double layer = Math.Floor(rand.NextDouble() * (maxLayers + 1));
 
-        var randomexp = layer == 0 ? rand.NextDouble() * 616 - 308 : rand.NextDouble() * 16;
+        Double randomexp = layer == 0 ? rand.NextDouble() * 616 - 308 : rand.NextDouble() * 16;
         //10% of the time, make it a simple power of 10
         if (rand.NextDouble() > 0.9)
         {
             randomexp = Math.Truncate(randomexp);
         }
 
-        var randommag = Math.Pow(10, randomexp);
+        Double randommag = Math.Pow(10, randomexp);
         //10% of the time, trunc mag
         if (rand.NextDouble() > 0.9)
         {
@@ -1165,7 +1165,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         BigDouble priceRatio,
         BigDouble currentOwned)
     {
-        var actualStart = priceStart.mul(priceRatio.pow(currentOwned));
+        BigDouble actualStart = priceStart.mul(priceRatio.pow(currentOwned));
         return floor(
             resourcesAvailable
                 .div(actualStart)
@@ -1197,9 +1197,9 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         // n = (-(a-d/2) + sqrt((a-d/2)^2+2dS))/d
         // where a is actualStart, d is priceAdd and S is resourcesAvailable
         // then floor it and you're done!
-        var actualStart = priceStart.add(currentOwned.mul(priceAdd));
-        var b = actualStart.sub(priceAdd.div(2));
-        var b2 = b.pow(2);
+        BigDouble actualStart = priceStart.add(currentOwned.mul(priceAdd));
+        BigDouble b = actualStart.sub(priceAdd.div(2));
+        BigDouble b2 = b.pow(2);
         return b
             .neg()
             .add(b2.add(priceAdd.mul(resourcesAvailable).mul(2)).sqrt())
@@ -1213,7 +1213,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         BigDouble priceAdd,
         BigDouble currentOwned)
     {
-        var actualStart = priceStart.add(currentOwned.mul(priceAdd)); // (n/2)*(2*a+(n-1)*d)
+        BigDouble actualStart = priceStart.add(currentOwned.mul(priceAdd)); // (n/2)*(2*a+(n-1)*d)
 
         return numItems.div(2).mul(actualStart.mul(2).plus(numItems.sub(1).mul(priceAdd)));
     }
@@ -1265,8 +1265,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return this;
         }
 
-        var absmag = Math.Abs(mag);
-        var signmag = Math.Sign(mag);
+        Double absmag = Math.Abs(mag);
+        Int32 signmag = Math.Sign(mag);
 
         if (absmag >= EXP_LIMIT)
         {
@@ -1363,7 +1363,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
     public BigDouble replaceFromString(string value)
     {
-        var originalValue = value;
+        String originalValue = value;
         BigDouble? cached = fromStringCache.get(originalValue);
         if (cached != null)
         {
@@ -1380,15 +1380,15 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         //Handle x^^^y format.
-        var pentationparts = value.Split("^^^");
+        String[] pentationparts = value.Split("^^^");
         double @base;
         double height;
         if (pentationparts.Length == 2)
         {
             @base = double.Parse(pentationparts[0]);
             height = double.Parse(pentationparts[1]);
-            var heightparts = pentationparts[1].Split(";");
-            var payload = 1d;
+            String[] heightparts = pentationparts[1].Split(";");
+            Double payload = 1d;
             if (heightparts.Length == 2)
             {
                 payload = double.Parse(heightparts[1]);
@@ -1400,7 +1400,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
             if (isFinite(@base) && isFinite(height))
             {
-                var result = pentate(@base, height, payload);
+                BigDouble result = pentate(@base, height, payload);
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1414,13 +1414,13 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         //Handle x^^y format.
-        var tetrationparts = value.Split("^^");
+        String[] tetrationparts = value.Split("^^");
         if (tetrationparts.Length == 2)
         {
             @base = double.Parse(tetrationparts[0]);
             height = double.Parse(tetrationparts[1]);
-            var heightparts = tetrationparts[1].Split(";");
-            var payload = 1d;
+            String[] heightparts = tetrationparts[1].Split(";");
+            Double payload = 1d;
             if (heightparts.Length == 2)
             {
                 payload = double.Parse(heightparts[1]);
@@ -1432,7 +1432,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
             if (isFinite(@base) && isFinite(height))
             {
-                var result = tetrate(@base, height, payload);
+                BigDouble result = tetrate(@base, height, payload);
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1446,7 +1446,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         //Handle x^y format.
-        var powparts = value.Split("^");
+        String[] powparts = value.Split("^");
         double exponent;
         if (powparts.Length == 2)
         {
@@ -1454,7 +1454,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             exponent = double.Parse(powparts[1]);
             if (isFinite(@base) && isFinite(exponent))
             {
-                var result = pow(@base, exponent);
+                BigDouble result = pow(@base, exponent);
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1471,14 +1471,14 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         value = value.Trim().ToLower(CultureInfo.InvariantCulture);
 
         //handle X PT Y format.
-        var ptparts = value.Split("pt");
+        String[] ptparts = value.Split("pt");
         if (ptparts.Length == 2)
         {
             @base = 10;
             height = double.Parse(ptparts[0]);
             ptparts[1] = ptparts[1].Replace("(", "");
             ptparts[1] = ptparts[1].Replace(")", "");
-            var payload = double.Parse(ptparts[1]);
+            Double payload = double.Parse(ptparts[1]);
             if (!isFinite(payload))
             {
                 payload = 1;
@@ -1486,7 +1486,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
             if (isFinite(@base) && isFinite(height))
             {
-                var result = tetrate(@base, height, payload);
+                BigDouble result = tetrate(@base, height, payload);
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1507,7 +1507,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             height = double.Parse(ptparts[0]);
             ptparts[1] = ptparts[1].Replace("(", "");
             ptparts[1] = ptparts[1].Replace(")", "");
-            var payload = double.Parse(ptparts[1]);
+            Double payload = double.Parse(ptparts[1]);
             if (!isFinite(payload))
             {
                 payload = 1;
@@ -1515,7 +1515,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
             if (isFinite(@base) && isFinite(height))
             {
-                var result = tetrate(@base, height, payload);
+                BigDouble result = tetrate(@base, height, payload);
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1528,13 +1528,13 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             }
         }
 
-        var parts = value.Split("e");
-        var ecount = parts.Length - 1;
+        String[] parts = value.Split("e");
+        Int32 ecount = parts.Length - 1;
 
         //Handle numbers that are exactly floats (0 or 1 es).
         if (ecount == 0)
         {
-            var numberAttempt = double.Parse(value);
+            Double numberAttempt = double.Parse(value);
             if (isFinite(numberAttempt))
             {
                 replaceFromDouble(numberAttempt);
@@ -1549,7 +1549,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         else if (ecount == 1)
         {
             //Very small numbers ("2e-3000" and so on) may look like valid floats but round to 0.
-            var numberAttempt = double.Parse(value);
+            Double numberAttempt = double.Parse(value);
             if (isFinite(numberAttempt) && numberAttempt != 0)
             {
                 replaceFromDouble(numberAttempt);
@@ -1563,7 +1563,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         //Handle new (e^N)X format.
-        var newparts = value.Split("e^");
+        String[] newparts = value.Split("e^");
         if (newparts.Length == 2)
         {
             sign = 1;
@@ -1572,10 +1572,10 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 sign = -1;
             }
 
-            var layerstring = "";
-            for (var i = 0; i < newparts[1].Length; ++i)
+            String layerstring = "";
+            for (Int32 i = 0; i < newparts[1].Length; ++i)
             {
-                var chrcode = newparts[1][i];
+                Char chrcode = newparts[1][i];
                 if ((chrcode >= 43 && chrcode <= 57) || chrcode == 101)
                 {
                     //is "0" to "9" or "+" or "-" or "." or "e" (or "," or "/")
@@ -1609,7 +1609,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return this;
         }
 
-        var mantissa = double.Parse(parts[0]);
+        Double mantissa = double.Parse(parts[0]);
         if (mantissa == 0)
         {
             sign = 0;
@@ -1627,7 +1627,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         //handle numbers like AeBeC and AeeeeBeC
         if (ecount >= 2)
         {
-            var me = double.Parse(parts[parts.Length - 2]);
+            Double me = double.Parse(parts[parts.Length - 2]);
             if (isFinite(me))
             {
                 exponent *= Math.Sign(me);
@@ -1657,7 +1657,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             layer = ecount;
             if (ecount == 2)
             {
-                var result = mul(FC(1, 2, exponent), D(mantissa));
+                BigDouble result = mul(FC(1, 2, exponent), D(mantissa));
                 sign = result.sign;
                 layer = result.layer;
                 mag = result.mag;
@@ -1999,8 +1999,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return fromDouble(a.sign * a.mag + b.sign * b.mag);
         }
 
-        var layera = a.layer * Math.Sign(a.mag);
-        var layerb = b.layer * Math.Sign(b.mag);
+        Double layera = a.layer * Math.Sign(a.mag);
+        Double layerb = b.layer * Math.Sign(b.mag);
 
         //If one of the numbers is 2+ layers higher than the other, just take the bigger number.
         if (layera - layerb >= 2)
@@ -2132,7 +2132,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
         if (a.layer == 2 && b.layer == 1)
         {
-            var newmag = FC(Math.Sign(a.mag), a.layer - 1, Math.Abs(a.mag)).add(
+            BigDouble newmag = FC(Math.Sign(a.mag), a.layer - 1, Math.Abs(a.mag)).add(
                 FC(Math.Sign(b.mag), b.layer - 1, Math.Abs(b.mag))
             );
             return FC(a.sign * b.sign, newmag.layer + 1, newmag.sign * newmag.mag);
@@ -2140,7 +2140,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
         if (a.layer == 2 && b.layer == 2)
         {
-            var newmag = FC(Math.Sign(a.mag), a.layer - 1, Math.Abs(a.mag)).add(
+            BigDouble newmag = FC(Math.Sign(a.mag), a.layer - 1, Math.Abs(a.mag)).add(
                 FC(Math.Sign(b.mag), b.layer - 1, Math.Abs(b.mag))
             );
             return FC(a.sign * b.sign, newmag.layer + 1, newmag.sign * newmag.mag);
@@ -2225,8 +2225,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
     public int cmpabs(BigDouble value)
     {
-        var layera = mag > 0 ? layer : -layer;
-        var layerb = value.mag > 0 ? value.layer : -value.layer;
+        Double layera = mag > 0 ? layer : -layer;
+        Double layerb = value.mag > 0 ? value.layer : -value.layer;
         if (layera > layerb)
         {
             return 1;
@@ -2375,8 +2375,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         // return abs(a-b) <= tolerance * max(abs(a), abs(b))
-        var magA = mag;
-        var magB = value.mag;
+        Double magA = mag;
+        Double magB = value.mag;
         if (layer > value.layer)
         {
             magB = f_magLog10(magB);
@@ -2532,8 +2532,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
     public BigDouble pow(BigDouble value)
     {
-        var a = this;
-        var b = value;
+        BigDouble a = this;
+        BigDouble b = value;
 
         //special case: if a is 0, then return 0 (UNLESS b is 0, then return 1)
         if (a.sign == 0)
@@ -2559,7 +2559,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return a;
         }
 
-        var result = a.absLog10().mul(b).pow10();
+        BigDouble result = a.absLog10().mul(b).pow10();
 
         if (sign == -1)
         {
@@ -2594,12 +2594,12 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return dNaN;
         }
 
-        var a = this;
+        BigDouble a = this;
 
         //handle layer 0 case - if no precision is lost just use Math.Pow, else promote one layer
         if (a.layer == 0)
         {
-            var newmag = Math.Pow(10, a.sign * a.mag);
+            Double newmag = Math.Pow(10, a.sign * a.mag);
             if (double.IsFinite(newmag) && Math.Abs(newmag) >= 0.1)
             {
                 return FC(1, 0, newmag);
@@ -2671,15 +2671,15 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 return fromDouble(f_gamma(sign * mag));
             case 0:
             {
-                var t = mag - 1;
-                var l = 0.9189385332046727; //0.5*Math.Log(2*Math.PI)
+                Double t = mag - 1;
+                Double l = 0.9189385332046727; //0.5*Math.Log(2*Math.PI)
                 l += (t + 0.5) * Math.Log(t);
                 l -= t;
-                var n2 = t * t;
-                var np = t;
-                var lm = 12 * np;
-                var adj = 1 / lm;
-                var l2 = l + adj;
+                Double n2 = t * t;
+                Double np = t;
+                Double lm = 12 * np;
+                Double adj = 1 / lm;
+                Double l2 = l + adj;
                 if (l2 == l)
                 {
                     return exp(l);
@@ -2698,7 +2698,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 l = l2;
                 np *= n2;
                 lm = 1260 * np;
-                var lt = 1 / lm;
+                Double lt = 1 / lm;
                 l += lt;
                 np *= n2;
                 lm = 1680 * np;
@@ -2753,7 +2753,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 return FC(1, 2, Math.Log10(mag) - 0.3010299956639812);
             default:
             {
-                var result = div(FC_NN(sign, layer - 1, mag), FC_NN(1, 0, 2));
+                BigDouble result = div(FC_NN(sign, layer - 1, mag), FC_NN(1, 0, 2));
                 result.layer += 1;
                 result.normalize();
                 return result;
@@ -2806,7 +2806,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
         if (double.IsPositiveInfinity(height))
         {
-            var this_num = this.toDouble();
+            Double this_num = this.toDouble();
             switch (this_num)
             {
                 //within the convergence range?
@@ -2816,7 +2816,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 //Formula for infinite height power tower.
                 case <= 1.44466786100976613366 and >= 0.06598803584531253708:
                 {
-                    var negln = ln(this).neg();
+                    BigDouble negln = ln(this).neg();
                     return negln.lambertw().div(negln);
                 }
                 case > 1.44466786100976613366:
@@ -2834,7 +2834,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         //using the linear approximation for height (TODO: don't know a better way to calculate it ATM, but it wouldn't surprise me if it's just NaN)
         if (eq(dZero))
         {
-            var result = Math.Abs((height + 1) % 2);
+            Double result = Math.Abs((height + 1) % 2);
             if (result > 1)
             {
                 result = 2 - result;
@@ -2848,17 +2848,17 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return iteratedlog(p, this, -height);
         }
 
-        var oldheight = height;
+        Double oldheight = height;
         height = Math.Truncate(height);
-        var fracheight = oldheight - height;
+        Double fracheight = oldheight - height;
 
         if (gt(dZero) && this.lte(1.44466786100976613366))
         {
             //similar to 0^^n, flip-flops between two values, converging slowly (or if it's below 0.06598803584531253708, never. so once again, the fractional part at the end will be a linear approximation (TODO: again pending knowledge of how to approximate better, although tbh I think it should in reality just be NaN)
             height = Math.Min(10000, height);
-            for (var i = 0; i < height; ++i)
+            for (Int32 i = 0; i < height; ++i)
             {
-                var old_payload = p;
+                BigDouble old_payload = p;
                 p = pow(p);
                 //stop early if we converge
                 if (old_payload.eq(p))
@@ -2869,7 +2869,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
             if (fracheight != 0)
             {
-                var next_payload = this.pow(p);
+                BigDouble next_payload = this.pow(p);
                 return p.mul(1 - fracheight).add(next_payload.mul(fracheight));
             }
 
@@ -2903,7 +2903,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             }
         }
 
-        for (var i = 0; i < height; ++i)
+        for (Int32 i = 0; i < height; ++i)
         {
             p = pow(p);
             //bail if we're NaN
@@ -2946,18 +2946,18 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return tetrate(b, -times, this);
         }
 
-        var result = fromBigDouble(this);
-        var fulltimes = times;
+        BigDouble result = fromBigDouble(this);
+        Double fulltimes = times;
         times = Math.Truncate(times);
-        var fraction = fulltimes - times;
+        Double fraction = fulltimes - times;
         if (result.layer - b.layer > 3)
         {
-            var layerloss = Math.Min(times, result.layer - b.layer - 3);
+            Double layerloss = Math.Min(times, result.layer - b.layer - 3);
             times -= layerloss;
             result.layer -= layerloss;
         }
 
-        for (var i = 0; i < times; ++i)
+        for (Int32 i = 0; i < times; ++i)
         {
             result = result.log(b);
             //bail if we're NaN
@@ -2996,14 +2996,14 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
     {
         @base ??= 10;
         BigDouble b = @base.Value;
-        var step_size = 0.001;
-        var has_changed_directions_once = false;
-        var previously_rose = false;
-        var result = slogTnternal(b).toDouble();
-        for (var i = 1; i < iterations; ++i)
+        Double step_size = 0.001;
+        Boolean has_changed_directions_once = false;
+        Boolean previously_rose = false;
+        Double result = slogTnternal(b).toDouble();
+        for (Int32 i = 1; i < iterations; ++i)
         {
-            var new_dec = new BigDouble(b).tetrate(result);
-            var currently_rose = new_dec.gt(this);
+            BigDouble new_dec = new BigDouble(b).tetrate(result);
+            Boolean currently_rose = new_dec.gt(this);
             if (i > 1)
             {
                 if (previously_rose != currently_rose)
@@ -3076,16 +3076,16 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return dNegOne;
         }
 
-        var result = 0;
-        var copy = fromBigDouble(this);
+        Int32 result = 0;
+        BigDouble copy = fromBigDouble(this);
         if (copy.layer - b.layer > 3)
         {
-            var layerloss = (int)(copy.layer - b.layer - 3);
+            Int32 layerloss = (int)(copy.layer - b.layer - 3);
             result += layerloss;
             copy.layer -= layerloss;
         }
 
-        for (var i = 0; i < 100; ++i)
+        for (Int32 i = 0; i < 100; ++i)
         {
             if (copy.lt(dZero))
             {
@@ -3148,13 +3148,13 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             @base = 10;
         }
 
-        var lower = 0d;
-        var upper = 0d;
+        Double lower = 0d;
+        Double upper = 0d;
         //basically, if we're between bases, we interpolate each bases' relevant values together
         //then we interpolate based on what the fractional height is.
         //accuracy could be improved by doing a non-linear interpolation (maybe), by adding more bases and heights (definitely) but this is AFAIK the best you can get without running some pari.gp or mathematica program to calculate exact values
         //however, do note http://myweb.astate.edu/wpaulsen/tetcalc/tetcalc.html can do it for arbitrary heights but not for arbitrary bases (2, e, 10 present)
-        for (var i = 0; i < criticalHeaders.Length; ++i)
+        for (Int32 i = 0; i < criticalHeaders.Length; ++i)
         {
             if (criticalHeaders[i] == @base)
             {
@@ -3166,7 +3166,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             else if (criticalHeaders[i] < @base && criticalHeaders[i + 1] > @base)
             {
                 // interpolate between this and the next
-                var basefrac =
+                Double basefrac =
                     (@base - criticalHeaders[i]) / (criticalHeaders[i + 1] - criticalHeaders[i]);
                 lower =
                     grid[i, (int)Math.Floor(height)] * (1 - basefrac) +
@@ -3178,7 +3178,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             }
         }
 
-        var frac = height - Math.Floor(height);
+        Double frac = height - Math.Floor(height);
         //improvement - you get more accuracy (especially around 0.9-1.0) by doing log, then frac, then powing the result
         //(we could pre-log the lookup table, but then fractional bases would get Weird)
         //also, use old linear for slog (values 0 or less in critical section). maybe something else is better but haven't thought about what yet
@@ -3196,7 +3196,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
     public BigDouble layeradd10(BigDouble diff)
     {
         diff = fromValueNoAlloc(diff).toDouble();
-        var result = fromBigDouble(this);
+        BigDouble result = fromBigDouble(this);
         if (diff >= 1)
         {
             //bug fix: if result is very smol (mag < 0, layer > 0) turn it into 0 first
@@ -3213,19 +3213,19 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
                 result.mag = -result.mag;
             }
 
-            var layeradd = Math.Truncate(diff.toDouble());
+            Double layeradd = Math.Truncate(diff.toDouble());
             diff -= layeradd;
             result.layer += layeradd;
         }
 
         if (diff <= -1)
         {
-            var layeradd = Math.Truncate(diff.toDouble());
+            Double layeradd = Math.Truncate(diff.toDouble());
             diff -= layeradd;
             result.layer += layeradd;
             if (result.layer < 0)
             {
-                for (var i = 0; i < 100; ++i)
+                for (Int32 i = 0; i < 100; ++i)
                 {
                     result.layer++;
                     result.mag = Math.Log10(result.mag);
@@ -3287,8 +3287,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
     //layeradd: like adding 'diff' to the number's slog(base) representation. Very similar to tetrate base 'base' and iterated log base 'base'.
     public BigDouble layeradd(double diff, BigDouble @base)
     {
-        var slogthis = slog(@base).toDouble();
-        var slogdest = slogthis + diff;
+        Double slogthis = slog(@base).toDouble();
+        Double slogdest = slogthis + diff;
         if (slogdest >= 0)
         {
             return tetrate(@base, slogdest);
@@ -3347,7 +3347,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             return FC_NN(sign, layer - 1, mag);
         }
 
-        var lnx = ln();
+        BigDouble lnx = ln();
         return lnx.div(lnx.lambertw());
     }
 
@@ -3361,9 +3361,9 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
         }
 
         BigDouble p = payload.Value;
-        var oldheight = height;
+        Double oldheight = height;
         height = Math.Truncate(height);
-        var fracheight = oldheight - height;
+        Double fracheight = oldheight - height;
 
         //I have no idea if this is a meaningful approximation for pentation to continuous heights, but it is monotonic and continuous.
         if (fracheight != 0)
@@ -3386,7 +3386,7 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
             }
         }
 
-        for (var i = 0; i < height; ++i)
+        for (Int32 i = 0; i < height; ++i)
         {
             p = tetrate(p.toDouble());
             //bail if we're NaN
@@ -3595,8 +3595,8 @@ public struct BigDouble : IComparable, IComparable<BigDouble>, IEquatable<BigDou
 
         static PowersOf10()
         {
-            var index = 0;
-            for (var i = 0; i < powers.Length; i++)
+            Int32 index = 0;
+            for (Int32 i = 0; i < powers.Length; i++)
             {
                 powers[index++] = double.Parse("1e" + (i - indexOf0), CultureInfo.InvariantCulture);
             }

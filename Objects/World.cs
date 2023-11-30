@@ -8,6 +8,14 @@ namespace Virulence.Objects;
 public class World
 {
     public int id { get; set; }
-    public Point Origin { get; } = new Point(0, 0);
-    public Dictionary<Point,Tile> tiles = new();
+    public static Point Origin { get; } = new Point(0, 0);
+    public Dictionary<Point, Tile> tiles = new();
+
+    public World()
+    {
+        tiles.Add(Origin, new(TileType.Headquarters)
+        {
+            id = 0,
+        });
+    }
 }

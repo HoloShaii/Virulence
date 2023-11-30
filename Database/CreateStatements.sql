@@ -10,7 +10,7 @@ CREATE TABLE player (
 	id					SERIAL PRIMARY KEY,
 	worldId				int,
 	saveName			varchar(255),
-	funds				text,
+	credits				text,
 	humans				text
 );
 
@@ -26,7 +26,7 @@ CREATE TABLE scavengers (
 	age					text,
 	lifeSpan			text,
 	efficiencyMulti		text,
-	fundsPerGameTick	text,
+	creditsPerGameTick	text,
 	location			point
 );
 

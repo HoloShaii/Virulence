@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#pragma warning disable CS8632
+
 namespace BreakEternity {
 
     public class LRUCache<K, V> where K : notnull {
@@ -31,7 +33,7 @@ namespace BreakEternity {
    * @returns The cached value, or undefined if key is not in the cache.
    */
         public V? get(K key) {
-            var node = map[key];
+            ListNode<K, V> node = map[key];
             if (node == null) {
                 return default;
             }
@@ -90,7 +92,7 @@ namespace BreakEternity {
                 throw new ArgumentException("Cannot update existing keys in the cache");
             }
 
-            var node = new ListNode<K, V>(key, value);
+            ListNode<K, V> node = new ListNode<K, V>(key, value);
             // Move node to the front of the list.
             if (first == null) {
                 // If the first is undefined, the last is undefined too.
@@ -112,7 +114,7 @@ namespace BreakEternity {
                 // so this.map.size is guaranteed to be >= 2,
                 // so this.first and this.last must be different valid ListNodes,
                 // and this.last.prev must also be a valid ListNode (possibly this.first).
-                var lastNode = this.last!;
+                ListNode<K, V> lastNode = this.last!;
                 map.Remove(lastNode.key);
                 last = lastNode.prev;
                 last!.next = null;

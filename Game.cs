@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Virulence.Controls;
+using Virulence.Displays;
 using Virulence.Extensions;
 using Virulence.Objects;
 
@@ -12,10 +14,12 @@ namespace Virulence;
 public class Game
 {
     private Screen gameForm;
-    private int gameTickInterval = 50;
+    public static int gameTickInterval = 50;
+    public static int ticksPerSecond = 1000 / gameTickInterval;
     public bool ShuttingDown;
     public GameLog Log;
     public ScavengerDisplay ScavengerDisplay;
+    public CurrenciesDisplay CurrenciesDisplay;
     public Player Player;
     public World World;
 
@@ -24,15 +28,24 @@ public class Game
         this.gameForm = gameForm;
         this.Log = new GameLog();
         this.ScavengerDisplay = new ScavengerDisplay();
+        this.CurrenciesDisplay = new CurrenciesDisplay();
         this.World = new World();
         this.Player = new Player();
     }
 
     public void PreGame()
     {
-        Player.AddScavenger();
 
-        StartGame();
+        //this.LoadGame(1, "test");
+
+        Player.AddScavenger();
+        Player.AddScavenger();
+        Player.AddScavenger();
+        Player.SetScavengerManual(0);
+
+
+        Thread thread = new Thread(StartGame);
+        thread.Start();
     }
 
     public void StartGame()
@@ -58,37 +71,37 @@ public class Game
     {
         ScavengerLoop();
     }
-    private List<BigDouble> scavengerFundsList = new();
+    private List<BigDouble> scavengerCreditsList = new();
     private List<Scavenger> scavengersToRemove = new();
     public void ScavengerLoop()
     {
-        scavengerFundsList.Clear();
+        scavengerCreditsList.Clear();
         scavengersToRemove.Clear();
 
-        Player.Scavengers.ForEach(x => x.Age = x.Age.plus(1));
+        Player.Scavengers.ForEach(x => x.Age += 1);
         if (Player.Scavengers.Any(x => x.Age > x.LifeSpan))
         {
             Player.Scavengers.RemoveAll(x => x.Age > x.LifeSpan);
             ScavengerDisplay.NeedsUpdate = true;
         }
 
-        scavengerFundsList.AddRange(Player.Scavengers.Select(x => x.ReturnCalculatedFundsPerTick()));
-        BigDouble scavengerFunds = new(0);
-        scavengerFundsList.ForEach(x => scavengerFunds = scavengerFunds.add(x));
-        Player.funds = Player.funds.add(scavengerFunds);
+        scavengerCreditsList.AddRange(Player.Scavengers.Select(x => x.ReturnCalculatedCreditsPerTick(World.tiles[x.Location].scavengingEfficiency)));
+        BigDouble scavengerCredits = new(0);
+        scavengerCreditsList.ForEach(x => scavengerCredits = scavengerCredits.add(x));
+        Player.credits = Player.credits.add(scavengerCredits);
     }
 
     public void VisualLoop()
     {
-        FundsDisplayLoop();
+        CreditsDisplayLoop();
         GameLogLoop();
         CurrenciesDisplayLoop();
         ScavengerDisplayLoop();
     }
 
-    public void FundsDisplayLoop()
+    public void CreditsDisplayLoop()
     {
-        gameForm.GetControl<Label>("lblFunds").SetControlText(String.Format("{0}: {1}", "Funds", Player.funds.ToString()));
+        gameForm.GetControl<Label>("lblCredits").SetControlText(String.Format("{0}: {1}", "Credits", Player.credits.toStringWithdecPlaces(1)));
     }
 
     public void GameLogLoop()
@@ -102,7 +115,14 @@ public class Game
 
     public void CurrenciesDisplayLoop()
     {
-
+        if (CurrenciesDisplay.NeedsUpdate)
+        {
+            CurrenciesDisplay.UpdateCurrencies(Player.otherCurrencies);
+        }
+        if (CurrenciesDisplay.Changed)
+        {
+            gameForm.GetControl<TextBox>("txtOtherCurrencies").SetControlText(CurrenciesDisplay.GetCurrenciesText());
+        }
     }
 
     public void ScavengerDisplayLoop()
@@ -113,38 +133,62 @@ public class Game
         }
         if (ScavengerDisplay.Changed)
         {
-            var names = ScavengerDisplay.GetScavengerNames();
+            gameForm.GetControl<Label>("lblScavengerDisplayPageNumber").SetControlText(String.Format("{0}/{1}", ScavengerDisplay.PageNumber, ScavengerDisplay.MaxPageNumber));
+            String[] names = ScavengerDisplay.GetScavengerNames();
+            BigDouble[] creditsPerSecond = ScavengerDisplay.GetScavengerCreditsPerSecond(World);
+            String[] locations = ScavengerDisplay.GetScavengerLocations(World);
+            String[] coordinates = ScavengerDisplay.GetScavengerCoordinates();
+            String[] manual = ScavengerDisplay.GetScavengerManual();
             for (int i = 1; i <= 6; i++)
             {
-                var controlNameChainNames = "grpScavengers>grpScavenger" + i.ToString();
+                String controlNameChain = "grpScavengers>grpScavenger{0}{1}{2}";
+                String controlNameChainNames = string.Format(controlNameChain, i, "", "");
+                String controlNameChainCreditsPerSecond = string.Format(controlNameChain, i, ">lblCreditsScavenger", i);
+                String controlNameChainLocation = string.Format(controlNameChain, i, ">lblLocationScavenger", i);
+                String controlNameChainCoordinates = string.Format(controlNameChain, i, ">lblCoordinatesScavenger", i);
+                String controlNameChainManual = string.Format(controlNameChain, i, ">lblManualScavenger", i);
 
                 if (i <= names.Length)
                 {
                     gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).SetControlText(names[i - 1]);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCreditsPerSecond).SetControlText($"Credits per second: {creditsPerSecond[i - 1].toStringWithdecPlaces(2)}");
+                    gameForm.GetLastControlInChain<Label>(controlNameChainLocation).SetControlText(locations[i - 1]);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCoordinates).SetControlText(coordinates[i - 1]);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainManual).SetControlText(manual[i - 1]);
+
+
                     gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).ShowHideControl(true);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCreditsPerSecond).ShowHideControl(true);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainLocation).ShowHideControl(true);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCoordinates).ShowHideControl(true);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainManual).ShowHideControl(true);
                 }
                 else
                 {
                     gameForm.GetLastControlInChain<GroupBox>(controlNameChainNames).ShowHideControl(false);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCreditsPerSecond).ShowHideControl(false);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainLocation).ShowHideControl(false);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainCoordinates).ShowHideControl(false);
+                    gameForm.GetLastControlInChain<Label>(controlNameChainManual).ShowHideControl(false);
                 }
 
             }
             ScavengerDisplay.Changed = false;
         }
 
-        var ages = ScavengerDisplay.GetScavengerAges();
-        var lifespans = ScavengerDisplay.GetScavengerLifespans();
+        Int32[] ages = ScavengerDisplay.GetScavengerAges();
+        Int32[] lifespans = ScavengerDisplay.GetScavengerLifespans();
         for (int i = 1; i <= 6; i++)
         {
-            var controlNameChainAges = "grpScavengers>grpScavenger" + i.ToString() + ">lblScavengerAge" + i.ToString();
+            String controlNameChainAges = "grpScavengers>grpScavenger" + i.ToString() + ">prgrsScavenger" + i.ToString();
             if (i <= ages.Length)
             {
-                gameForm.GetLastControlInChain<Label>(controlNameChainAges).SetControlText(ages[i - 1] + " / " + lifespans[i - 1]);
-                gameForm.GetLastControlInChain<Label>(controlNameChainAges).ShowHideControl(true);
+                gameForm.GetLastControlInChain<ProgressBar>(controlNameChainAges).SetProgressBar(lifespans[i - 1] - ages[i - 1], lifespans[i - 1]);
+                gameForm.GetLastControlInChain<ProgressBar>(controlNameChainAges).ShowHideControl(true);
             }
             else
             {
-                gameForm.GetLastControlInChain<Label>(controlNameChainAges).ShowHideControl(false);
+                gameForm.GetLastControlInChain<ProgressBar>(controlNameChainAges).ShowHideControl(false);
             }
         }
     }

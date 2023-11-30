@@ -12,22 +12,43 @@ Implementations for MVP:
 		Multi lose pity currency.
 	UI:
 		Add Paged Display for gamelog -- DONE
-		Add Display for currencies -- IN PROGRESS
-		Add Paged Display for scavengers -- IN PROGRESS
+		Add Display for currencies -- DONE
+		Add Paged Display for scavengers:
+			Show credits earned per second -- DONE
+			Show location name -- DONE
+			Show coordinates -- DONE
+			Age progress bar -- DONE
+			Food progress bar
 		Add Paged Display for rescuers
+	Systems:
+		Dynamic Currency generation (limit based on location, new currencies should only be generated outside of a large area from the previous currency)
+		Dynamic Currency exchanging
 	Story:
 		Add gamelog for story -- DONE
 		Add story entries for the base game mechanics -- IN PROGRESS
 	World:
-		Add worldgen
-		Add random locations with items
-		Add dangers to locations (like infected areas, rogue people, occasional rabid infected)
+		Add worldgen:
+			Use wave function collapse?
+		Add locations:
+			Headquarters -- DONE
+			Street -- DONE
+			Field -- IN PROGRESS
+			Park -- IN PROGRESS
+			Safehouse
+			Interactables:
+				Vendors -- IN PROGRESS
+				Items
+			Dangers:
+				Contamination
+				Rogue Agents
+				Rabid infected
 	Humans:
 		Add possibility of adding humans to player with random names and semi-random stats -- IN PROGRESS
 		Scavengers:
 			Add Scavengers -- DONE
-			Generate funds -- DONE
-			Traverse world locations manually
+			Generate credits -- DONE
+			Consume food (Auto stock-up in headquarters/safehouses, slowly lose it when not in headquarters/safehouses)
+			Traverse world locations manually -- DONE
 				Find items
 				Locate dangers
 		Rescuers:
@@ -72,7 +93,8 @@ Implementations for fun:
 		Can spread infection
 		Show fewer symptoms / harder to notice
 		Can produce items if caught
-
+	Items:
+		Office Broth - Inside joke item used to end runs quickly
 
 
 

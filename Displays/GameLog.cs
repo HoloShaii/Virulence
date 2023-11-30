@@ -9,7 +9,7 @@ public class GameLog
 {
     private List<string> GameLogList = new()
     {
-        "Good to see you, we are dealing with a viral outbreak of enormous proportions... It's up to you to build up a group of scavengers, rescue workers to protect as many citizens as you can manage. We don't even know the extent to which this virus has destroyed civilization, but from what we've seen locally, it doesn't look good..."
+        "Good to see you, we are dealing with a viral outbreak of enormous proportions... It's up to you to build up a force of people to protect as many citizens as you can manage. We don't even know the extent to which this virus has destroyed civilization, but from what we've seen locally, it doesn't look good..."
     };
 
     private int _pageNumber = 1;
